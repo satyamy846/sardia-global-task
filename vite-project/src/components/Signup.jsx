@@ -3,11 +3,13 @@ import { useState } from "react";
 import {useNavigate} from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Spinner from "./Spinner";
 
 export default function Signup() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
@@ -63,6 +65,7 @@ export default function Signup() {
 
   async function handleSignup(e){
     e.preventDefault();
+    setLoading(true);
     try{
       console.log("url --", import.meta.env.VITE_SERVER_BASE_URL);
 
@@ -80,6 +83,7 @@ export default function Signup() {
 
       console.log("response ---- ", response);
       if(response){
+        setLoading(false);
         toast.success("Signed Up successfully !", {
             position: "top-center"
           });
@@ -87,6 +91,7 @@ export default function Signup() {
       }
     }
     catch(err){
+      setLoading(false);
        console.log(err);
        toast.error("Something went wrong", {
         position: "top-center"
@@ -118,8 +123,9 @@ export default function Signup() {
                   id="name"
                   name="name"
                   type="name"
+                  placeholder="Enter your name"
                 //   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 indent-2"
                   value={name}
                   onChange={(e)=> setName(e.target.value)}
                 />
@@ -135,9 +141,10 @@ export default function Signup() {
                   id="email"
                   name="email"
                   type="email"
-                //   autoComplete="email"
-                //   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  autoComplete="email"
+                  placeholder="Enter your email"
+                  // required
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 indent-2"
                   value={email}
                   onChange={(e)=> setEmail(e.target.value)}
                 />
@@ -158,8 +165,9 @@ export default function Signup() {
                   name="password"
                   type="password"
                   autoComplete="current-password"
+                  placeholder="Enter your password"
                 //   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 indent-2"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -180,7 +188,7 @@ export default function Signup() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign up
+               {loading ? <Spinner/> : `Sign Up`}
               </button>
             </div>
           </form>

@@ -63,7 +63,7 @@ export const loginUser = asyncErrorHandler(async (req, res, next) => {
     }
     const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '24h' });
 
-    res.cookie("token", token, { httpOnly: true, secure: true })
+    res.cookie("token", token, { httpOnly: true, secure: true, sameSite:"None" })
         .status(200).json({
             message: 'Logged in',
             status: true,
@@ -162,4 +162,9 @@ export const updatePassword = asyncErrorHandler(async (req, res, next) => {
 
 },
 )
+
+export const logoutUser = asyncErrorHandler( async (req, res, next)=>{
+    res.clearCookie("token", {path:"/", sameSite:"None", secure: true});
+    return res.status(200).send({message:"Logged out successfully"});
+})
 
