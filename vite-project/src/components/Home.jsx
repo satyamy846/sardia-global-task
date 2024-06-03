@@ -4,8 +4,10 @@ import Navbar from './Navbar'
 const Home = () => {
   return (
     <>
-        <Navbar/>
+    <div className='flex justify-between items-center bg-slate-500 h-14 px-3 text-white'>
     <div>Home</div>
+        <Navbar/>
+    </div>
     </>
   )
 }
